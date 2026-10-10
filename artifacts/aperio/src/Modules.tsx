@@ -3016,7 +3016,7 @@ function Reports({ scenario, state, setState, onToast }: Props) {
 
   const handleDownload = () => {
     if (reportResult?.download_url) {
-      window.open(`http://localhost:8000${reportResult.download_url}`, '_blank');
+      window.open(`https://aperio-backend.onrender.com${reportResult.download_url}`, '_blank');
     } else {
       onToast('Report generated and logged.');
     }

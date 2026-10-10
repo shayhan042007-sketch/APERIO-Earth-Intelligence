@@ -193,7 +193,7 @@ export function computeAperioIndicesLocally(
   };
 }
 
-export const API_BASE = 'http://localhost:8000/api';
+export const API_BASE = (import.meta.env.VITE_API_URL || 'https://aperio-backend.onrender.com').replace(/\/$/, '') + '/api';
 
 export async function fetchRiskIndices(scenarioId: string): Promise<RiskIndicesBreakdown> {
   try {
