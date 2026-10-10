@@ -1,0 +1,40 @@
+@media(max-width:820px){
+  .module-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .module-grid>.span-12,.module-grid>.span-8,.module-grid>.span-7,.module-grid>.span-6,.module-grid>.span-5,.module-grid>.span-4,.module-grid>.span-3{grid-column:span 6}
+  .portal-actions{grid-template-columns:1fr}
+  .portal-card{min-height:135px}
+  .public-loop{grid-template-columns:repeat(5,minmax(125px,1fr));overflow:auto}
+  .quick-trail{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .evidence-layer-grid{grid-template-columns:repeat(2,1fr)}
+  .signin-visual{min-height:42dvh}
+  .signin-visual>img{object-position:center 45%}
+}
+@media(max-width:560px){
+  .module-grid{grid-template-columns:1fr}
+  .module-grid>.span-12,.module-grid>.span-8,.module-grid>.span-7,.module-grid>.span-6,.module-grid>.span-5,.module-grid>.span-4,.module-grid>.span-3{grid-column:span 1}
+  .topbar{padding-inline:8px}
+  .top-right{gap:5px}
+  .top-select{max-width:93px}
+  .scenario-select-label,.clock{display:none}
+  .sim-pill{max-width:95px;overflow:hidden}
+  .online-pill{padding:5px;font-size:6px}
+  .portal-content{padding:45px 18px}
+  .india-map-panel{grid-template-columns:1fr}
+  .india-schematic{height:150px}
+  .two-maps{grid-template-columns:1fr}
+  .two-maps .map-wrap{height:250px}
+  .compare-selects{align-items:stretch;flex-direction:column;gap:8px}
+  .compare-selects>span{display:none}
+  .compare-bar-row{grid-template-columns:90px 1fr 1fr;gap:5px}
+  .pipeline{grid-template-columns:repeat(2,1fr)}
+  .detection-image{height:210px}
+  .evidence-layer-grid{grid-template-columns:1fr 1fr}
+  .quick-trail{grid-template-columns:1fr}
+  .public-footer{align-items:flex-start;flex-direction:column}
+  .public-header .control-row .btn,.public-header .control-row .btn-secondary{padding:7px 8px;font-size:8px}
+  .signin-form{padding:22px 16px}
+  .hero-art{min-height:260px}
+  .hero h1{font-size:38px}
+  .module-panel{padding:11px}
+  .terrain-wrap{height:360px}
+}

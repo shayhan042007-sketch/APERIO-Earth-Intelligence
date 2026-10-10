@@ -1,0 +1,1106 @@
+Build a complete, polished, responsive web application called **APERIO 2.0 — Autonomous Earth Intelligence Platform**.
+
+I already have the concept and some existing UI references. Build the website as a **professional disaster-intelligence command platform**, not as a generic SaaS dashboard.
+
+The primary visual language should be:
+
+- White — dominant background
+- Light blue — maps, highlights and information
+- Grey — borders, secondary panels
+- Dark navy/charcoal — text
+- Blue/teal — primary interaction color
+- Red/orange/yellow/green — only for disaster severity/status
+
+The interface should feel like a combination of:
+- satellite intelligence platform
+- emergency command center
+- modern government technology dashboard
+- geospatial analytics system
+
+Do NOT make it look like a gaming website.
+
+---
+
+# 1. LOGIN PAGE
+
+Create a modern animated split-screen login page.
+
+## Left side — approximately 60%
+
+Create a cinematic animated Earth-observation visual.
+
+The scenes should continuously change every 4–5 seconds:
+
+1. 🛰️ Satellite observing Earth
+2. 🌊 Flood detection
+3. 🔥 Wildfire detection
+4. 🏔️ Landslide detection
+5. 🌳 Deforestation detection
+
+The transitions should use:
+- smooth fade
+- subtle zoom
+- slight parallax
+- satellite scanning effects
+- subtle geospatial grid overlays
+- detection polygons
+- location markers
+
+The left side should contain:
+
+**APERIO**
+
+**EARTH INTELLIGENCE  
+FOR SAFER TOMORROWS**
+
+Dynamic headline changing with the scene:
+
+**Observe Earth**  
+**Detect Floods**  
+**Monitor Wildfires**  
+**Predict Landslides**  
+**Track Deforestation**
+
+Supporting text:
+
+**AI-powered satellite intelligence for early detection, risk assessment and disaster response.**
+
+Use real-looking Earth/satellite/disaster imagery where appropriate.
+
+## Right side — approximately 40%
+
+Keep the login form fixed while the left side changes.
+
+White background.
+
+Display:
+
+APERIO logo
+
+**Welcome Back**
+
+Sign in to continue to APERIO
+
+Email
+
+Password
+
+Remember me
+
+Forgot password?
+
+**Sign In →**
+
+OR
+
+**Continue with Google**
+
+Don't have an account? **Sign Up**
+
+Add:
+- password visibility toggle
+- validation
+- loading state
+- responsive design
+
+---
+
+# 2. APERIO INTRO ANIMATION
+
+After successful login, show a short cinematic intro before the main application.
+
+The screen should initially be minimal.
+
+Animation:
+
+Satellite/Earth appears
+
+↓
+
+**APERIO**
+
+↓
+
+**AUTONOMOUS EARTH INTELLIGENCE**
+
+↓
+
+**MONITOR. PREDICT. PROTECT.**
+
+Then smoothly transition into the application.
+
+Make this feel like a polished game/system intro, but professional.
+
+Duration approximately 2–3 seconds.
+
+Include a small Skip button.
+
+---
+
+# 3. DISASTER SELECTION PAGE
+
+This is the page immediately after the APERIO intro.
+
+Use the existing reference design as inspiration.
+
+Header:
+
+**Select a Disaster Area**
+
+Subtitle:
+
+**Choose a disaster area to open its dedicated intelligence command center.**
+
+Show four main disaster cards.
+
+### Card 1
+
+🏔️ **Landslide**
+
+Example:
+
+**Meppadi, Wayanad • Kerala**
+
+Description:
+
+Slope instability, rainfall saturation and debris-flow intelligence.
+
+### Card 2
+
+🌊 **Flood**
+
+Example:
+
+**Dibrugarh & Basin • Assam**
+
+Description:
+
+River inundation and flood-extent intelligence.
+
+### Card 3
+
+🔥 **Wildfire**
+
+Example:
+
+**Forest Region • Maharashtra**
+
+Description:
+
+Fire detection, burn-area monitoring and vegetation risk.
+
+### Card 4
+
+🌳 **Deforestation**
+
+Example:
+
+**Forest Region • Assam**
+
+Description:
+
+Forest-loss monitoring and environmental change detection.
+
+Do NOT use Coastal Erosion or Cloudburst as the main cards.
+
+Each card should have:
+
+- disaster image
+- severity badge
+- location
+- short description
+- **Enter Command Center →**
+
+Also show a simple India map with colored location markers.
+
+---
+
+# 4. MAIN COMMAND DASHBOARD
+
+After selecting a disaster, open the main APERIO command center.
+
+Use the provided dashboard reference as the visual foundation.
+
+Keep a professional compact navigation bar.
+
+Top navigation:
+
+**APERIO**
+
+Overview  
+Priority Alerts  
+Detection  
+Change Detection  
+Compare Regions  
+DEM / 3D  
+Risk Simulator  
+Relocation  
+Resources  
+Reports
+
+Location selector:
+
+**[ Kerala ▼ ]**
+
+API status:
+
+**● API STATUS: OK**
+
+Admin
+
+Logout
+
+---
+
+# 5. OVERVIEW DASHBOARD
+
+The overview page should contain the key operational information.
+
+Top metric cards:
+
+### MODEL CONFIDENCE
+95%
+
+### AFFECTED AREA
+7.03 km²
+
+### SEVERITY
+HIGH
+
+### SCENES ANALYZED
+15
+
+Below:
+
+### Antecedent Rainfall
+
+Create a line chart showing:
+
+1 day  
+3 days  
+7 days  
+14 days  
+30 days
+
+### Disaster Extent by Scene
+
+Create a bar chart showing how the affected area changes between satellite observations.
+
+### Live Map
+
+The bottom/central area should contain a large interactive map.
+
+Use:
+- Leaflet
+- OpenStreetMap or another appropriate map provider
+
+The map should support:
+
+- zoom
+- pan
+- markers
+- risk polygons
+- disaster zones
+- affected areas
+- shelters
+- hospitals
+- roads
+- evacuation routes
+
+---
+
+# 6. REGION RISK MAPPING
+
+The map should visually mark affected regions.
+
+Use:
+
+🔴 Critical  
+🟠 High  
+🟡 Moderate  
+🟢 Safe
+
+Clicking a region should open an information panel.
+
+Example:
+
+**Wayanad — Meppadi**
+
+Risk:
+
+**91%**
+
+Population exposed:
+
+**4,250**
+
+Affected area:
+
+**7.03 km²**
+
+Shelters:
+
+**8**
+
+Hospitals:
+
+**2**
+
+Buttons:
+
+**Analyze**
+
+**Relocation**
+
+**View Evidence**
+
+The selected region should be highlighted directly on the map.
+
+---
+
+# 7. PRIORITY ALERTS
+
+Create a dedicated Priority Alerts page.
+
+Sort alerts based on:
+
+- risk probability
+- population exposed
+- infrastructure exposed
+- severity
+- time sensitivity
+- model confidence
+
+Example:
+
+### 🔴 CRITICAL
+
+**LANDSLIDE RISK**
+
+Meppadi, Wayanad — Kerala
+
+Risk: **91%**
+
+Evidence:
+
+- heavy antecedent rainfall
+- steep slope
+- SAR anomaly
+- terrain instability
+- vegetation/surface change
+
+Buttons:
+
+**View on Map**
+
+**Generate Report**
+
+---
+
+# 8. BEFORE / AFTER SATELLITE COMPARISON
+
+Create a dedicated Change Detection page.
+
+Use an interactive before/after slider.
+
+LEFT:
+
+**BEFORE**
+
+RIGHT:
+
+**AFTER**
+
+Allow the user to drag the divider.
+
+Below the imagery show:
+
+**Change Detected**
+
+Affected Area: 7.03 km²
+
+Confidence: 95%
+
+Also provide tabs:
+
+**Sentinel-1**
+
+**Sentinel-2**
+
+**Optical**
+
+**SAR**
+
+**SAM Segmentation**
+
+The user should be able to see how the affected area was identified.
+
+---
+
+# 9. COMPARE REGIONS
+
+Create a page where users can compare two geographic regions.
+
+Example:
+
+**Wayanad vs Maharashtra**
+
+Compare:
+
+- rainfall
+- slope
+- elevation
+- vegetation
+- affected area
+- risk probability
+- population exposed
+- historical events
+
+Show the comparison on maps and charts.
+
+---
+
+# 10. DEM / 3D TERRAIN
+
+This must be one of the major APERIO features.
+
+Create a **DEM / 3D** option directly in the dashboard.
+
+Use **CesiumJS** or an appropriate WebGL 3D terrain library.
+
+Allow users to:
+
+- rotate terrain
+- zoom
+- tilt
+- inspect elevation
+- view slope
+- view aspect
+- overlay disaster risk
+- view SAM segmentation
+- view affected regions
+
+Example information panel:
+
+Elevation: 1,240 m
+
+Slope: 38°
+
+Risk: 87%
+
+Terrain Condition: HIGH
+
+IMPORTANT:
+
+Do not claim that the terrain itself is dynamically changing.
+
+The terrain/DEM is the base layer.
+
+The **risk and analytical overlays are dynamic**.
+
+For example:
+
+Risk:
+
+32% → 54% → 76% → 91%
+
+as new evidence arrives.
+
+---
+
+# 11. RISK SIMULATOR
+
+Create an interactive risk simulation page.
+
+Allow the user to modify variables such as:
+
+Rainfall
+
+Slope
+
+Soil saturation
+
+Vegetation loss
+
+Terrain instability
+
+Satellite change indicators
+
+Example sliders:
+
+Rainfall:
+180 mm
+
+Slope:
+35°
+
+Vegetation loss:
+22%
+
+Soil saturation:
+67%
+
+Button:
+
+**SIMULATE RISK**
+
+Show:
+
+Current Risk: 64%
+
+Simulated Risk: 87%
+
+Then update the map visually.
+
+Use a realistic mock prediction engine if the real ML backend is not connected yet.
+
+Structure the code so a real XGBoost API can later replace the mock calculation.
+
+---
+
+# 12. DISASTER DETECTION
+
+Create a unified Detection page with four modes:
+
+## LANDSLIDE
+
+Show:
+
+- Sentinel-1 SAR
+- Sentinel-2 optical
+- slope
+- rainfall
+- terrain
+- debris/change detection
+
+## FLOOD
+
+Show:
+
+- water extent
+- rainfall
+- river areas
+- SAR flood detection
+- affected buildings/roads
+
+## WILDFIRE
+
+Show:
+
+- fire affected area
+- burn area
+- vegetation loss
+- smoke/fire region
+- satellite detection
+
+## DEFORESTATION
+
+Show:
+
+- forest cover
+- vegetation index
+- before/after imagery
+- forest-loss area
+- change detection
+
+---
+
+# 13. RELOCATION SYSTEM
+
+Create a dedicated **Relocation** page.
+
+This should be map-first.
+
+The map should display:
+
+🔴 Disaster zone
+
+🟠 High-risk zone
+
+🟡 Evacuation zone
+
+🟢 Safe zone
+
+🏠 Shelters
+
+🏥 Hospitals
+
+🚑 Ambulances
+
+🍱 Food distribution
+
+💧 Water
+
+🛣️ Roads
+
+The user should be able to select an affected population/area.
+
+Then APERIO recommends the safest relocation location.
+
+Example:
+
+### Recommended Relocation
+
+**Government School A**
+
+Distance: 2.4 km
+
+Capacity: 650
+
+Current Occupancy: 380
+
+Available: 270
+
+Road Status: Open
+
+Hazard Risk: LOW
+
+Travel time:
+
+🚗 8 min
+
+🚶 28 min
+
+Button:
+
+**START ROUTE**
+
+Draw the recommended evacuation route directly on the map, similar to Google Maps.
+
+The route should avoid:
+
+- high-risk zones
+- flooded roads
+- landslide zones
+- blocked roads
+
+Use safe roads whenever possible.
+
+---
+
+# 14. RESOURCE / CARRYING CAPACITY
+
+Create a **Resources** page.
+
+Track emergency capacity.
+
+Example:
+
+### Population at Risk
+
+4,250
+
+### Shelter Capacity
+
+5,000
+
+85% utilized
+
+### Ambulances
+
+12 / 15
+
+### Food
+
+3,800 / 5,000 meals
+
+### Water
+
+4,200 L
+
+### Beds
+
+720 / 900
+
+### Medical Staff
+
+18 / 25
+
+### Emergency Vehicles
+
+8 / 10
+
+Automatically highlight shortages.
+
+Example:
+
+⚠️ Food capacity insufficient for 24 hours.
+
+⚠️ 3 additional ambulances recommended.
+
+⚠️ Shelter capacity approaching critical threshold.
+
+---
+
+# 15. GEOCHAT / ASK APERIO
+
+Keep a floating button:
+
+**Ask APERIO**
+
+Users can ask questions.
+
+Example:
+
+"What caused this region to become high risk?"
+
+Response:
+
+Risk is currently 87%.
+
+Main contributing factors:
+
+- heavy rainfall
+- steep terrain
+- surface change
+- SAR anomaly
+
+Another example:
+
+"Where should we relocate 500 people?"
+
+The system should identify the safest available shelter based on:
+
+- hazard risk
+- capacity
+- distance
+- road accessibility
+- available resources
+
+Use mock responses initially, but structure the application so this can later connect to GeoChat / an LLM API.
+
+---
+
+# 16. AUTHORITY REPORT
+
+Create a **Reports** page.
+
+Button:
+
+**GENERATE AUTHORITY REPORT**
+
+Generate a professional disaster report containing:
+
+- region
+- disaster type
+- risk level
+- affected area
+- population exposed
+- rainfall
+- terrain information
+- satellite evidence
+- before/after imagery
+- risk probability
+- recommended relocation
+- resource requirements
+- confidence
+- timestamp
+
+Allow:
+
+**Download PDF**
+
+---
+
+# 17. OFFLINE MODE
+
+APERIO must support an offline-first operational concept.
+
+Add an indicator:
+
+**● ONLINE**
+
+or
+
+**◐ OFFLINE MODE**
+
+When offline, the interface should still allow:
+
+- cached maps
+- cached DEM
+- cached disaster imagery
+- previously generated risk maps
+- field observations
+- relocation information
+- resource information
+
+When connectivity returns:
+
+**SYNCING DATA...**
+
+Then:
+
+**SYNC COMPLETE**
+
+Structure this cleanly so real offline storage can be implemented later.
+
+---
+
+# 18. CONTINUOUS MONITORING
+
+The architecture should conceptually support:
+
+New satellite data
+
+↓
+
+Preprocessing
+
+↓
+
+Change detection
+
+↓
+
+SAM segmentation
+
+↓
+
+XGBoost prediction
+
+↓
+
+Bayesian risk update
+
+↓
+
+Updated risk map
+
+↓
+
+Priority alert
+
+↓
+
+Human approval
+
+↓
+
+Action
+
+↓
+
+Monitor again
+
+The UI should communicate that APERIO is a continuously updating system rather than a static map.
+
+---
+
+# 19. MAIN MAP EXPERIENCE
+
+The map is extremely important.
+
+Make it the central operational interface.
+
+Provide layer controls:
+
+☑ Risk
+
+☑ Satellite
+
+☑ SAM Segmentation
+
+☑ DEM
+
+☑ Slope
+
+☑ Rainfall
+
+☑ Population
+
+☑ Shelters
+
+☑ Hospitals
+
+☑ Roads
+
+☑ Evacuation Routes
+
+☑ Resources
+
+Users should be able to toggle layers.
+
+---
+
+# 20. TECH STACK
+
+Use:
+
+### Frontend
+
+React  
+TypeScript  
+Vite  
+Tailwind CSS  
+Lucide React  
+React Router  
+Leaflet / React-Leaflet  
+CesiumJS  
+Recharts
+
+### Backend-ready architecture
+
+Python  
+FastAPI
+
+### AI-ready architecture
+
+XGBoost  
+PyTorch  
+SAM  
+Prithvi-EO  
+Bayesian inference  
+GeoChat
+
+### Geospatial
+
+Rasterio  
+GeoPandas  
+GDAL  
+GeoJSON
+
+### Database
+
+PostgreSQL + PostGIS
+
+For the initial prototype, use mock data where APIs/models are unavailable.
+
+DO NOT pretend mock data is real-time satellite data.
+
+Clearly structure the application so real Sentinel-1, Sentinel-2, DEM and rainfall APIs can be connected later.
+
+---
+
+# 21. IMPORTANT DESIGN RULES
+
+The entire website should feel like **one coherent product**.
+
+Do not create every page with a completely different design.
+
+Maintain:
+
+- same sidebar/header
+- same typography
+- same card system
+- same spacing
+- same map style
+- same status colors
+- same interaction patterns
+
+The application should look like a real operational product used by disaster-management authorities.
+
+Use white as the dominant color.
+
+Use light blue and grey for information architecture.
+
+Use red/orange/yellow only for actual risk/severity.
+
+Avoid excessive gradients.
+
+Avoid excessive glassmorphism.
+
+Avoid huge rounded cartoon cards.
+
+Avoid unnecessary animations except for:
+
+- login scene transitions
+- APERIO intro
+- map interactions
+- data loading
+- subtle risk updates
+
+---
+
+# 22. MOST IMPORTANT USER FLOW
+
+The final experience should be:
+
+LOGIN
+
+↓
+
+APERIO CINEMATIC INTRO
+
+↓
+
+SELECT DISASTER AREA
+
+↓
+
+COMMAND CENTER
+
+↓
+
+OVERVIEW
+
+↓
+
+PRIORITY ALERTS
+
+↓
+
+SATELLITE DETECTION
+
+↓
+
+BEFORE / AFTER
+
+↓
+
+REGION COMPARISON
+
+↓
+
+DEM / 3D TERRAIN
+
+↓
+
+RISK SIMULATOR
+
+↓
+
+RELOCATION
+
+↓
+
+RESOURCE CAPACITY
+
+↓
+
+HUMAN APPROVAL
+
+↓
+
+AUTHORITY REPORT
+
+↓
+
+CONTINUOUS MONITORING
+
+---
+
+# 23. CRITICAL IMPLEMENTATION REQUIREMENT
+
+I have an existing APERIO website.
+
+**Do not blindly overwrite the existing project.**
+
+First inspect the existing project structure and reuse existing:
+
+- components
+- routes
+- styling
+- API connections
+- map implementation
+- backend endpoints
+- existing dashboard functionality
+
+Then redesign/refactor where necessary.
+
+Do not break existing functionality.
+
+If a feature from the reference screenshots already exists, improve it rather than duplicating it.
+
+Build the website in a modular way so that the AI/ML backend can be connected later.
+
+The final result should look like a **complete autonomous Earth-intelligence and disaster-response platform**, with the map, satellite evidence, dynamic risk, 3D terrain, relocation and emergency resource planning all connected into one workflow.

@@ -1,0 +1,34 @@
+{
+  "event": "Uttarakhand Wildfire",
+  "region": "Uttarakhand",
+  "fire_date": "2017-02-26",
+  "fire_observations": [
+    {
+      "latitude": 29.70873,
+      "longitude": 79.91681,
+      "confidence": 0.78,
+      "frp": 11.28
+    },
+    {
+      "latitude": 29.71086,
+      "longitude": 79.9169,
+      "confidence": 0.78,
+      "frp": 12.44
+    }
+  ],
+  "sensor": "Sentinel-2",
+  "tile": "44RMU",
+  "pre_event": {
+    "date": "2017-02-16 05:19:01.026000+00:00",
+    "scene_id": "S2A_MSIL2A_20170216T051901_R062_T44RMU_20210208T131306",
+    "cloud_cover": 16.153062
+  },
+  "post_event": {
+    "date": "2017-03-28 05:16:51.026000+00:00",
+    "scene_id": "S2A_MSIL2A_20170328T051651_R062_T44RMU_20210209T022537",
+    "cloud_cover": 9.175205
+  },
+  "source": "Microsoft Planetary Computer",
+  "product": "Sentinel-2 L2A",
+  "visual_asset": "TCI / true color"
+}

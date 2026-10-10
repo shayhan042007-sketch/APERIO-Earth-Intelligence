@@ -1,0 +1,25 @@
+{
+  "event": "Assam Flood",
+  "region": "Tinsukia, Assam",
+  "sensor": "Sentinel-2",
+  "tile": "T46RGR",
+  "pre_event": {
+    "date": "2024-05-22 04:15:51.024000+00:00",
+    "scene_id": "S2A_MSIL2A_20240522T041551_R090_T46RGR_20240522T101606",
+    "cloud_cover": 0.041354
+  },
+  "post_event": {
+    "date": "2024-07-31 04:15:51.024000+00:00",
+    "scene_id": "S2A_MSIL2A_20240731T041551_R090_T46RGR_20240731T100155",
+    "cloud_cover": 13.153438
+  },
+  "bbox": [
+    95.21,
+    27.34,
+    95.51,
+    27.639999999999997
+  ],
+  "source": "Microsoft Planetary Computer",
+  "product": "Sentinel-2 L2A",
+  "visual_asset": "TCI / true color"
+}

@@ -1,0 +1,20 @@
+{
+  "event": "Wayanad Landslide",
+  "region": "Meppadi, Wayanad, Kerala",
+  "event_date": "2024-07-30",
+  "sensor": "Sentinel-2",
+  "tile": "T43PEN",
+  "pre_event": {
+    "date": "2024-06-29 05:16:51.024000+00:00",
+    "scene_id": "S2A_MSIL2A_20240629T051651_R062_T43PEN_20240629T111826",
+    "cloud_cover": 59.035397
+  },
+  "post_event": {
+    "date": "2024-08-13 05:16:59.024000+00:00",
+    "scene_id": "S2B_MSIL2A_20240813T051659_R062_T43PEN_20240813T095611",
+    "cloud_cover": 27.9066
+  },
+  "source": "Microsoft Planetary Computer",
+  "product": "Sentinel-2 L2A",
+  "visual_asset": "TCI / true color"
+}

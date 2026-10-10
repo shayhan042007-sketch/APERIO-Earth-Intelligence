@@ -1,0 +1,8 @@
+{
+  "roc_auc": 1.0,
+  "pr_auc": 1.0,
+  "f1_score": 1.0,
+  "brier_score": 0.0,
+  "validation_samples": 375,
+  "status": "VALIDATED_PROTOTYPE_MODEL"
+}

@@ -1,0 +1,20 @@
+{
+  "event": "Deforestation",
+  "region": "Western Ghats, Kerala",
+  "sensor": "Sentinel-2",
+  "tile": "43PFM",
+  "pre_event": {
+    "date": "2024-02-07 05:10:01.024000+00:00",
+    "scene_id": "S2A_MSIL2A_20240207T051001_R019_T43PFM_20240207T101557",
+    "cloud_cover": 0.362107
+  },
+  "post_event": {
+    "date": "2024-05-07 05:06:51.024000+00:00",
+    "scene_id": "S2A_MSIL2A_20240507T050651_R019_T43PFM_20240507T094120",
+    "cloud_cover": 7.423511
+  },
+  "source": "Microsoft Planetary Computer",
+  "product": "Sentinel-2 L2A",
+  "visual_asset": "TCI / true color",
+  "note": "Pre/post observation pair for vegetation change analysis. Deforestation is not asserted without change-detection evidence."
+}

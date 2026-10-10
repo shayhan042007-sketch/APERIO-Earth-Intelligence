@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "APERIO"
+description = "An autonomous earth intelligence platform that turns satellite imagery and geospatial signals into actionable disaster and environmental intelligence through a Detect, Explain, Assess, Act, Verify decision loop."
+version = "1.0.0"
+id = "artifacts/aperio"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25310
+
+[services.development]
+run = "pnpm --filter @workspace/aperio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/aperio", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/aperio/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25310"
+BASE_PATH = "/"

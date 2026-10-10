@@ -1,0 +1,21 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Use pnpm instead'); process.exit(1) }\"",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+  },
+  "private": true,
+  "dependencies": {
+    "@replit/connectors-sdk": "^0.4.3"
+  },
+  "devDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "4.63.1",
+    "lightningcss": "1.32.0",
+    "lightningcss-win32-x64-msvc": "^1.33.0",
+    "prettier": "^3.9.6",
+    "typescript": "~5.9.3"
+  }
+}
