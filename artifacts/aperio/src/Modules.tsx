@@ -810,9 +810,9 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
     return () => { mounted = false; };
   }, [scenario.id]);
 
-  const hasImagery = Boolean((scenario.has_imagery && preImg && postImg) || (backendMeta?.has_imagery === true));
   const preImg = backendMeta?.pre_image_url || scenario.pre_image;
   const postImg = backendMeta?.post_image_url || scenario.post_image;
+  const hasImagery = Boolean((scenario.has_imagery && preImg && postImg) || (backendMeta?.has_imagery === true));
   const preSensor = backendMeta?.pre_sensor || scenario.pre_sensor || 'Sentinel-2 MSI Level-2A';
   const postSensor = backendMeta?.post_sensor || scenario.post_sensor || 'Sentinel-2 MSI Level-2A';
   const preDate = backendMeta?.pre_date || scenario.pre_date || scenario.acquisition_date;

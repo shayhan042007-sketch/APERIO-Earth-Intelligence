@@ -1,5 +1,5 @@
 // APERIO 2.0 — Offline-First Disaster Intelligence Service Worker
-const CACHE_NAME = 'aperio-offline-v1';
+const CACHE_NAME = 'aperio-offline-v2';
 
 // Critical app shell files precached during install
 const APP_SHELL = [
@@ -43,8 +43,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch interception strategy:
 // 1. Navigation requests -> Network-first with cache fallback to /index.html
-// 2. Static bundles/assets (.js, .css, images, fonts) -> Cache-first with network revalidation
+// 2. Health check requests -> Bypass SW completely to test true network reachability
 // 3. API requests -> Network-first; if offline, return structured 503 response
+// 4. Static bundles/assets (.js, .css, images, fonts) -> Cache-first with network revalidation
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -80,8 +81,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle API requests
-  if (url.pathname.startsWith('/api') || url.port === '8000') {
+  // 1. Bypass Service Worker entirely for health checks
+  // Guarantees direct network reachability test without interception, caching, or synthetic fallback
+  if (url.pathname === '/api/health' || url.pathname.endsWith('/health')) {
+    return;
+  }
+
+  // 2. Handle API requests (both local port 8000 and production cloud backend)
+  if (url.pathname.startsWith('/api') || url.hostname.includes('onrender.com') || url.port === '8000') {
     event.respondWith(
       fetch(request)
         .then((response) => response)
@@ -104,7 +111,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle Static Assets (JS, CSS, SVGs, Images, Fonts)
+  // 3. Handle Static Assets (JS, CSS, SVGs, Images, Fonts)
   if (
     url.origin === self.location.origin ||
     url.pathname.endsWith('.js') ||

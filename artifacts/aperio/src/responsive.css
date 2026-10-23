@@ -27,10 +27,29 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Main app shell and area prevent horizontal layout blowouts */
+.app-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.main-area {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
 /* Ensure flex/grid children can shrink below their intrinsic content size */
-.app-shell,
-.main-area,
-.content,
 .workspace-grid > *,
 .lower-grid > *,
 .module-grid > *,
@@ -105,6 +124,14 @@ img, video, canvas {
   max-width: 100%;
   overflow-x: auto;
   margin-bottom: 12px;
+}
+
+.incident-strip {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
 }
 
 /* --- 2. High-Resolution & Extra-Large Displays (min-width: 1601px) --- */
@@ -318,17 +345,6 @@ img, video, canvas {
     z-index: 1100;
   }
 
-  /* Main Area & Shell */
-  .app-shell {
-    display: block !important;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-  .main-area {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
   .topbar {
     padding: 0 12px !important;
     height: 56px !important;
@@ -445,7 +461,7 @@ img, video, canvas {
   }
 
   .top-select {
-    max-width: 130px !important;
+    max-width: 125px !important;
     font-size: 11px !important;
     padding: 5px 6px !important;
     height: 35px !important;
@@ -533,6 +549,11 @@ img, video, canvas {
     font-size: 7.5px !important;
   }
 
+  /* Flex rows & headers wrap */
+  .row, .page-head {
+    flex-wrap: wrap !important;
+  }
+
   /* Public landing header */
   .public-header {
     height: auto !important;
@@ -591,6 +612,7 @@ img, video, canvas {
   .table td {
     padding: 8px 8px !important;
     font-size: 12px !important;
+    word-break: break-word !important;
   }
 
   /* Buttons & Controls: min 42px touch target height */
@@ -665,9 +687,9 @@ img, video, canvas {
   }
 
   .top-select {
-    max-width: 115px !important;
+    max-width: 110px !important;
     font-size: 10px !important;
-    padding: 4px 6px !important;
+    padding: 4px 5px !important;
     height: 33px !important;
   }
 
@@ -704,7 +726,7 @@ img, video, canvas {
     font-size: 11px !important;
   }
   .compare-bar-row {
-    grid-template-columns: 80px 1fr 1fr !important;
+    grid-template-columns: 75px 1fr 1fr !important;
     gap: 4px !important;
     font-size: 10px !important;
   }
@@ -725,6 +747,13 @@ img, video, canvas {
     align-items: flex-start !important;
     gap: 8px !important;
   }
+
+  .map-hud-controls {
+    max-width: calc(100% - 12px) !important;
+    left: 6px !important;
+    right: 6px !important;
+    top: 6px !important;
+  }
 }
 
 /* --- 8. Ultra-Compact Phones (max-width: 360px, e.g. iPhone SE 320px) --- */
@@ -737,9 +766,9 @@ img, video, canvas {
     display: none !important;
   }
   .top-select {
-    max-width: 105px !important;
+    max-width: 100px !important;
     font-size: 10px !important;
-    padding: 3px 5px !important;
+    padding: 3px 4px !important;
   }
 
   /* Metric cards: clean vertical stack */
@@ -764,10 +793,21 @@ img, video, canvas {
     padding: 8px 6px !important;
   }
   .content {
-    padding: 8px 6px 20px !important;
+    padding: 8px 5px 20px !important;
   }
   .heading h1 {
     font-size: 22px !important;
+  }
+
+  .range-row {
+    grid-template-columns: 85px 1fr 40px !important;
+    gap: 4px !important;
+    font-size: 10px !important;
+  }
+  .compare-bar-row {
+    grid-template-columns: 65px 1fr 1fr !important;
+    gap: 3px !important;
+    font-size: 9.5px !important;
   }
 }
 
