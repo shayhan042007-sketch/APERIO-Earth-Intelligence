@@ -9,6 +9,10 @@ Explicitly reports LLM provider configuration status.
 import os
 import re
 from typing import Dict, Any, List, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 from backend.app.services.copilot_tools import (
     execute_copilot_tool,

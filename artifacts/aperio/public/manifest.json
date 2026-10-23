@@ -1,0 +1,25 @@
+{
+  "name": "APERIO 2.0 — Autonomous Earth Intelligence Platform",
+  "short_name": "APERIO",
+  "description": "Offline-First Autonomous Earth Intelligence, Satellite Reconnaissance, and Disaster Response Platform",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0f18",
+  "theme_color": "#0d1b2a",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["utilities", "productivity", "government", "weather"]
+}

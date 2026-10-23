@@ -20,6 +20,7 @@ import {
   LogOut,
   Mail,
   MapPin,
+  Menu,
   MessageSquareText,
   Pause,
   Play,
@@ -36,6 +37,7 @@ import {
 import { Link, Redirect, Route, Router as WouterRouter, Switch, useLocation } from 'wouter';
 import ModulePage from './Modules';
 import MissionControl from './MissionControl';
+import { OnlineStatusBadge } from '@/components/OnlineStatusBadge';
 import {
   navItems,
   operationalDisclaimer,
@@ -434,7 +436,8 @@ function Home() {
           <strong>APERIO</strong>
           <span className="brand-sub">EARTH INTELLIGENCE</span>
         </Link>
-        <div className="control-row">
+        <div className="control-row" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <OnlineStatusBadge variant="compact" />
           <Link href="/sign-in" className="btn" style={{ padding: '10px 20px', fontSize: 14, fontWeight: 700 }}>
             <KeyRound size={15} /> Sign In
           </Link>
@@ -971,9 +974,7 @@ function SelectArea({
         </div>
 
         <div className="cinematic-select-status">
-          <span className="cinematic-hud-pill">
-            <span className="cinematic-pulse-dot" /> FASTAPI CONNECTED
-          </span>
+          <OnlineStatusBadge variant="full" />
           <span className="cinematic-hud-pill">
             <Globe size={13} /> 4 DATASETS ONLINE
           </span>
@@ -1462,26 +1463,21 @@ function CommandShell({
   state: LocalState;
   setState: (s: LocalState) => void;
 }) {
-  const [online, setOnline] = useState(navigator.onLine);
   const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    const on = () => setOnline(true);
-    const off = () => setOnline(false);
-    window.addEventListener('online', on);
-    window.addEventListener('offline', off);
-    return () => {
-      window.removeEventListener('online', on);
-      window.removeEventListener('offline', off);
-    };
-  }, []);
 
   const activePath = window.location.pathname.replace(basePath, '') || '/';
   const [trailShown, setTrailShown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const selected = scenarios.find(s => s.id === state.selectedScenario) ?? scenarios[0];
+
+  // Auto-close mobile drawer on navigation
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [activePath]);
 
   // Functional Sign Out
   const handleSignOut = () => {
+    setMobileMenuOpen(false);
     const next = { ...state, authenticatedUser: null };
     setState(next);
     saveState(next);
@@ -1493,7 +1489,14 @@ function CommandShell({
   return (
     <div className="app-shell">
       {/* Primary Sidebar (THE SINGLE PRIMARY NAVIGATION) */}
-      <aside className="sidebar">
+      <aside
+        className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}
+        onClick={e => {
+          if ((e.target as HTMLElement).closest('.nav-item, .brand-link')) {
+            setMobileMenuOpen(false);
+          }
+        }}
+      >
         <Link className="brand brand-link" href="/command-center/overview">
           <div className="brand-mark">A</div>
           <div>
@@ -1556,12 +1559,32 @@ function CommandShell({
         </button>
       </aside>
 
+      {/* Mobile Backdrop Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-nav-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close navigation"
+        />
+      )}
+
       {/* Main Content Area */}
       <main className="main-area">
         {/* Top Header */}
         <header className="topbar">
-          <div className="top-brandline">
-            MISSION OPERATIONS <span> / </span> EMERGENCY RESPONSE DESK
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            <button
+              type="button"
+              className="mobile-nav-toggle"
+              aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+            <div className="top-brandline">
+              <span className="brandline-full">MISSION OPERATIONS <span> / </span> EMERGENCY RESPONSE DESK</span>
+              <span className="brandline-compact">MISSION OPERATIONS</span>
+            </div>
           </div>
           <div className="top-right">
             <label className="scenario-select-label" htmlFor="scenario-top">
@@ -1584,13 +1607,7 @@ function CommandShell({
                 </option>
               ))}
             </select>
-            <div className="sim-pill">
-              <span className="sim-dot" /> BACKEND SYNCED
-            </div>
-            <div className={`online-pill ${online ? '' : 'offline'}`}>
-              <span className={`online-dot ${online ? '' : 'offline-dot'}`} />
-              {online ? 'ONLINE' : 'OFFLINE MODE'}
-            </div>
+            <OnlineStatusBadge variant="full" />
             <span className="clock">{stamp()}</span>
           </div>
         </header>

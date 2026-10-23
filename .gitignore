@@ -52,6 +52,20 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+*.env
+*.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+*.pfx
+credentials.json
+client_secrets.json
+secrets/
 
 # SQLite and DB backups
 *.db
@@ -69,6 +83,7 @@ venv/
 
 # Large satellite datasets
 backend/data/satellite_imagery/
+backend/data/disaster_datasets/
 *.zip
 *.tar
 *.tar.gz

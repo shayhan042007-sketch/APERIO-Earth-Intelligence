@@ -1,8 +1,21 @@
 import os
+from pathlib import Path
 from datetime import datetime
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+# Load environment variables from .env in project root and backend directory
+_project_root = Path(__file__).resolve().parent.parent.parent
+_root_env = _project_root / ".env"
+_backend_env = Path(__file__).resolve().parent.parent / ".env"
+if _root_env.exists():
+    load_dotenv(_root_env)
+if _backend_env.exists():
+    load_dotenv(_backend_env)
+load_dotenv()
+
 
 from backend.app.database.session import Base, engine
 from backend.app.api.auth import router as auth_router

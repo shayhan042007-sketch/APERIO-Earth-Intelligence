@@ -4,6 +4,10 @@ import json
 import urllib.request
 import urllib.parse
 from typing import Dict, Any, List, Optional, Tuple
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class CDSEConfigError(Exception):
     """Raised when Copernicus Data Space Ecosystem credentials are missing."""

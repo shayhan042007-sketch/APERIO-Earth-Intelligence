@@ -1,4 +1,5 @@
 // APERIO Deterministic Risk Indices and Client Layer
+import { apiFetch } from './lib/api-events';
 export type RiskIndicesBreakdown = {
   priority_score: number;
   classification: string;
@@ -193,11 +194,11 @@ export function computeAperioIndicesLocally(
   };
 }
 
-export const API_BASE = (import.meta.env.VITE_API_URL || 'https://aperio-backend.onrender.com').replace(/\/$/, '') + '/api';
+export const API_BASE = 'http://localhost:8000/api';
 
 export async function fetchRiskIndices(scenarioId: string): Promise<RiskIndicesBreakdown> {
   try {
-    const res = await fetch(`${API_BASE}/risk/indices?scenario_id=${encodeURIComponent(scenarioId)}`);
+    const res = await apiFetch(`${API_BASE}/risk/indices?scenario_id=${encodeURIComponent(scenarioId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -209,7 +210,7 @@ export async function fetchRiskIndices(scenarioId: string): Promise<RiskIndicesB
 
 export async function calculateCustomIndices(req: Record<string, any>): Promise<RiskIndicesBreakdown> {
   try {
-    const res = await fetch(`${API_BASE}/risk/indices/calculate`, {
+    const res = await apiFetch(`${API_BASE}/risk/indices/calculate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req)
@@ -225,7 +226,7 @@ export async function calculateCustomIndices(req: Record<string, any>): Promise<
 
 export async function fetchAlerts(): Promise<any[]> {
   try {
-    const res = await fetch(`${API_BASE}/alerts`);
+    const res = await apiFetch(`${API_BASE}/alerts`);
     if (res.ok) {
       return await res.json();
     }
@@ -237,7 +238,7 @@ export async function fetchAlerts(): Promise<any[]> {
 
 export async function approveAlert(alertId: string, operatorNotes?: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/approve`, {
+    const res = await apiFetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/approve`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ operator_notes: operatorNotes || 'Approved via Mission Control Response Desk' })
@@ -253,7 +254,7 @@ export async function approveAlert(alertId: string, operatorNotes?: string): Pro
 
 export async function rejectAlert(alertId: string, reason?: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/reject`, {
+    const res = await apiFetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/reject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ reason: reason || 'Rejected pending further ground verification' })
@@ -269,7 +270,7 @@ export async function rejectAlert(alertId: string, reason?: string): Promise<any
 
 export async function fetchDisasterTypes(): Promise<string[]> {
   try {
-    const res = await fetch(`${API_BASE}/disasters/types`);
+    const res = await apiFetch(`${API_BASE}/disasters/types`);
     if (res.ok) {
       return await res.json();
     }
@@ -281,7 +282,7 @@ export async function fetchDisasterTypes(): Promise<string[]> {
 
 export async function fetchDisasterStates(disasterType: string): Promise<string[]> {
   try {
-    const res = await fetch(`${API_BASE}/disasters/states?disaster_type=${encodeURIComponent(disasterType)}`);
+    const res = await apiFetch(`${API_BASE}/disasters/states?disaster_type=${encodeURIComponent(disasterType)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -293,7 +294,7 @@ export async function fetchDisasterStates(disasterType: string): Promise<string[
 
 export async function fetchDisasterDistricts(disasterType: string, state: string): Promise<string[]> {
   try {
-    const res = await fetch(`${API_BASE}/disasters/districts?disaster_type=${encodeURIComponent(disasterType)}&state=${encodeURIComponent(state)}`);
+    const res = await apiFetch(`${API_BASE}/disasters/districts?disaster_type=${encodeURIComponent(disasterType)}&state=${encodeURIComponent(state)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -308,7 +309,7 @@ export async function fetchDisasterEvents(disasterType: string, state?: string, 
     let url = `${API_BASE}/disasters/events?disaster_type=${encodeURIComponent(disasterType)}&limit=${limit}`;
     if (state) url += `&state=${encodeURIComponent(state)}`;
     if (district) url += `&district=${encodeURIComponent(district)}`;
-    const res = await fetch(url);
+    const res = await apiFetch(url);
     if (res.ok) {
       return await res.json();
     }
@@ -320,7 +321,7 @@ export async function fetchDisasterEvents(disasterType: string, state?: string, 
 
 export async function fetchDisasterEventDetails(eventId: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/disasters/event-details?event_id=${encodeURIComponent(eventId)}`);
+    const res = await apiFetch(`${API_BASE}/disasters/event-details?event_id=${encodeURIComponent(eventId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -332,7 +333,7 @@ export async function fetchDisasterEventDetails(eventId: string): Promise<any> {
 
 export async function analyzeDisasterEvent(eventId: string, autoApprove = false): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/disasters/analyze`, {
+    const res = await apiFetch(`${API_BASE}/disasters/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event_id: eventId, auto_approve: autoApprove })
@@ -348,7 +349,7 @@ export async function analyzeDisasterEvent(eventId: string, autoApprove = false)
 
 export async function fetchRelocationOptions(scenarioId: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/relocation?scenario_id=${encodeURIComponent(scenarioId)}`);
+    const res = await apiFetch(`${API_BASE}/relocation?scenario_id=${encodeURIComponent(scenarioId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -360,7 +361,7 @@ export async function fetchRelocationOptions(scenarioId: string): Promise<any> {
 
 export async function fetchDemTerrain(scenarioId: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/dem?scenario_id=${encodeURIComponent(scenarioId)}`);
+    const res = await apiFetch(`${API_BASE}/dem?scenario_id=${encodeURIComponent(scenarioId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -373,7 +374,7 @@ export async function fetchDemTerrain(scenarioId: string): Promise<any> {
 export async function fetchResourceInventory(scenarioId?: string): Promise<any> {
   try {
     const url = scenarioId ? `${API_BASE}/resources?scenario_id=${encodeURIComponent(scenarioId)}` : `${API_BASE}/resources`;
-    const res = await fetch(url);
+    const res = await apiFetch(url);
     if (res.ok) {
       return await res.json();
     }
@@ -385,7 +386,7 @@ export async function fetchResourceInventory(scenarioId?: string): Promise<any> 
 
 export async function fetchChangeDetection(scenarioId: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/change-detection?scenario_id=${encodeURIComponent(scenarioId)}`);
+    const res = await apiFetch(`${API_BASE}/change-detection?scenario_id=${encodeURIComponent(scenarioId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -397,7 +398,7 @@ export async function fetchChangeDetection(scenarioId: string): Promise<any> {
 
 export async function runHazardDetection(scenarioId: string, hazard: string, layersSelected?: string[]): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/detection/run`, {
+    const res = await apiFetch(`${API_BASE}/detection/run`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scenario_id: scenarioId, hazard, layers_selected: layersSelected })
@@ -413,7 +414,7 @@ export async function runHazardDetection(scenarioId: string, hazard: string, lay
 
 export async function generateAuthorityReport(scenarioId: string, operatorNotes?: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/reports/generate`, {
+    const res = await apiFetch(`${API_BASE}/reports/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scenario_id: scenarioId, operator_notes: operatorNotes || '' })
@@ -434,7 +435,7 @@ export function downloadReportPdfUrl(filename: string): string {
 export async function fetchMonitoringState(scenarioId?: string): Promise<any> {
   try {
     const url = scenarioId ? `${API_BASE}/monitoring?scenario_id=${encodeURIComponent(scenarioId)}` : `${API_BASE}/monitoring`;
-    const res = await fetch(url);
+    const res = await apiFetch(url);
     if (res.ok) {
       return await res.json();
     }
@@ -446,7 +447,7 @@ export async function fetchMonitoringState(scenarioId?: string): Promise<any> {
 
 export async function triggerMonitoringCycle(scenarioId?: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/monitoring/run`, {
+    const res = await apiFetch(`${API_BASE}/monitoring/run`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scenario_id: scenarioId || 'wayanad-landslide' })
@@ -462,7 +463,7 @@ export async function triggerMonitoringCycle(scenarioId?: string): Promise<any> 
 
 export async function getGeoChatProvider(): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/geochat/provider`);
+    const res = await apiFetch(`${API_BASE}/geochat/provider`);
     if (res.ok) {
       return await res.json();
     }
@@ -479,7 +480,7 @@ export async function askGeoChat(
   messages?: any[]
 ): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/geochat`, {
+    const res = await apiFetch(`${API_BASE}/geochat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, scenario_id: scenarioId, context, messages })
@@ -512,7 +513,7 @@ export async function submitOperatorReview(
   }
 ): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/review`, {
+    const res = await apiFetch(`${API_BASE}/alerts/${encodeURIComponent(alertId)}/review`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(review)
@@ -528,7 +529,7 @@ export async function submitOperatorReview(
 
 export async function fetchGisLayers(scenarioId: string): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/data/gis?scenario_id=${encodeURIComponent(scenarioId)}`);
+    const res = await apiFetch(`${API_BASE}/data/gis?scenario_id=${encodeURIComponent(scenarioId)}`);
     if (res.ok) {
       return await res.json();
     }
@@ -540,7 +541,7 @@ export async function fetchGisLayers(scenarioId: string): Promise<any> {
 
 export async function loginOperator(email = 'operator@aperio.org', password = 'aperio'): Promise<any> {
   try {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await apiFetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
