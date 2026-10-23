@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 import { API_BASE } from '@/api';
 
 export interface ConnectivityState {
@@ -11,11 +11,11 @@ export interface ConnectivityState {
 
 // Global connectivity store so all components and API layers share synchronized state
 let globalState: ConnectivityState = {
-  isOnline: navigator.onLine,
-  networkOnline: navigator.onLine,
-  apiReachable: navigator.onLine,
+  isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+  networkOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+  apiReachable: typeof navigator !== 'undefined' ? navigator.onLine : true,
   lastChecked: null,
-  statusLabel: navigator.onLine ? 'CHECKING...' : 'OFFLINE MODE (NO NETWORK)'
+  statusLabel: (typeof navigator !== 'undefined' && navigator.onLine) ? 'CHECKING...' : 'OFFLINE MODE (NO NETWORK)'
 };
 
 const listeners = new Set<() => void>();
@@ -62,7 +62,7 @@ export function updateConnectivity(partial: Partial<ConnectivityState>) {
 
 /**
  * Report a failed API request from any fetch call across the platform.
- * Immediately flips API reachability to false without waiting for the heartbeat.
+ * Immediately flips API reachability to false without waiting for heartbeat.
  */
 export function reportApiFailure(errorOrEndpoint?: string) {
   console.warn('[APERIO Connectivity] API request failure reported:', errorOrEndpoint);
@@ -71,6 +71,7 @@ export function reportApiFailure(errorOrEndpoint?: string) {
     statusLabel: 'OFFLINE MODE · BACKEND UNREACHABLE',
     lastChecked: new Date()
   });
+  scheduleNextHeartbeat(true);
 }
 
 /**
@@ -78,8 +79,9 @@ export function reportApiFailure(errorOrEndpoint?: string) {
  */
 export function reportApiSuccess() {
   if (!globalState.apiReachable || !globalState.isOnline) {
-    console.log('[APERIO Connectivity] Backend connection restored via successful request');
+    console.log('[APERIO Connectivity] Backend connection verified via successful request');
   }
+  consecutiveFailures = 0;
   updateConnectivity({
     networkOnline: true,
     apiReachable: true,
@@ -88,66 +90,145 @@ export function reportApiSuccess() {
   });
 }
 
+// In-flight request deduplication and adaptive retry controls
+let activeCheckPromise: Promise<boolean> | null = null;
+let lastCheckTime = 0;
+let consecutiveFailures = 0;
+let heartbeatTimer: any = null;
+
+const ONLINE_INTERVAL_MS = 30000;    // 30 seconds when connected and healthy
+const MIN_OFFLINE_INTERVAL_MS = 15000; // 15 seconds initial retry when offline
+const MAX_OFFLINE_INTERVAL_MS = 60000; // 60 seconds max backoff when offline
+const THROTTLE_MIN_MS = 4000;         // Don't re-ping if checked < 4s ago unless forced
+
 /**
- * Actively ping backend /health endpoint to verify real connectivity
+ * Actively ping backend /health endpoint to verify real connectivity.
+ * - Prevents duplicate in-flight requests.
+ * - Respects throttling unless force is true.
+ * - Provides 6s timeout to account for cloud host cold-starts.
  */
-export async function checkConnectivityNow(): Promise<boolean> {
-  if (!navigator.onLine) {
+export async function checkConnectivityNow(options?: { force?: boolean }): Promise<boolean> {
+  const force = options?.force ?? false;
+  const now = Date.now();
+
+  // If a check is already in-flight, return the existing active promise
+  if (activeCheckPromise) {
+    return activeCheckPromise;
+  }
+
+  // Throttle: avoid spamming health checks if we just verified reachability within 4s
+  if (!force && globalState.apiReachable && (now - lastCheckTime) < THROTTLE_MIN_MS) {
+    return globalState.apiReachable;
+  }
+
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
     updateConnectivity({
       networkOnline: false,
       apiReachable: false,
       statusLabel: 'OFFLINE MODE · NO NETWORK',
       lastChecked: new Date()
     });
+    scheduleNextHeartbeat(true);
     return false;
   }
 
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+  activeCheckPromise = (async () => {
+    try {
+      const controller = new AbortController();
+      // 6.5s timeout accounts for cloud backend cold-starts without hanging indefinitely
+      const timeoutId = setTimeout(() => controller.abort(), 6500);
 
-    const healthUrl = `${API_BASE}/health`;
-    const response = await fetch(healthUrl, {
-      method: 'GET',
-      signal: controller.signal,
-      cache: 'no-store'
-    });
-    clearTimeout(timeoutId);
-
-    if (response.ok) {
-      updateConnectivity({
-        networkOnline: true,
-        apiReachable: true,
-        statusLabel: 'ONLINE · CLOUD CONNECTED',
-        lastChecked: new Date()
+      const healthUrl = `${API_BASE}/health`;
+      const response = await fetch(healthUrl, {
+        method: 'GET',
+        signal: controller.signal,
+        cache: 'no-store',
+        headers: {
+          'Accept': 'application/json'
+        }
       });
-      return true;
-    } else {
+      clearTimeout(timeoutId);
+
+      lastCheckTime = Date.now();
+
+      if (response.ok) {
+        consecutiveFailures = 0;
+        updateConnectivity({
+          networkOnline: true,
+          apiReachable: true,
+          statusLabel: 'ONLINE · CLOUD CONNECTED',
+          lastChecked: new Date()
+        });
+        scheduleNextHeartbeat(false);
+        return true;
+      } else {
+        consecutiveFailures++;
+        updateConnectivity({
+          networkOnline: true,
+          apiReachable: false,
+          statusLabel: `OFFLINE MODE · API HTTP ${response.status}`,
+          lastChecked: new Date()
+        });
+        scheduleNextHeartbeat(true);
+        return false;
+      }
+    } catch (err: any) {
+      lastCheckTime = Date.now();
+      consecutiveFailures++;
       updateConnectivity({
-        networkOnline: true,
+        networkOnline: typeof navigator !== 'undefined' ? navigator.onLine : false,
         apiReachable: false,
-        statusLabel: `OFFLINE MODE · API HTTP ${response.status}`,
+        statusLabel: 'OFFLINE MODE · BACKEND UNREACHABLE',
         lastChecked: new Date()
       });
+      scheduleNextHeartbeat(true);
       return false;
+    } finally {
+      activeCheckPromise = null;
     }
-  } catch (err) {
-    updateConnectivity({
-      networkOnline: navigator.onLine,
-      apiReachable: false,
-      statusLabel: 'OFFLINE MODE · BACKEND UNREACHABLE',
-      lastChecked: new Date()
-    });
-    return false;
-  }
+  })();
+
+  return activeCheckPromise;
 }
 
-// Global listeners for window online / offline events
+/**
+ * Adaptive heartbeat scheduler:
+ * - 30s when online
+ * - Exponential backoff (15s -> 30s -> 60s) when backend is unreachable to avoid hammering
+ * - Pauses when tab is in background
+ */
+function scheduleNextHeartbeat(isFailure = false) {
+  if (typeof window === 'undefined') return;
+
+  if (heartbeatTimer) {
+    clearTimeout(heartbeatTimer);
+    heartbeatTimer = null;
+  }
+
+  // Do not poll if the document is hidden/backgrounded to save resources
+  if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
+    return;
+  }
+
+  let delay = ONLINE_INTERVAL_MS;
+  if (isFailure) {
+    // Backoff: 15s, 30s, 60s max
+    const backoffExponent = Math.min(consecutiveFailures, 3);
+    delay = Math.min(MIN_OFFLINE_INTERVAL_MS * Math.pow(1.5, backoffExponent - 1), MAX_OFFLINE_INTERVAL_MS);
+  }
+
+  heartbeatTimer = setTimeout(() => {
+    checkConnectivityNow();
+  }, Math.round(delay));
+}
+
+// Global listeners for window events
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => {
     console.log('[APERIO Connectivity] Browser went online; verifying backend reachability...');
+    consecutiveFailures = 0;
     updateConnectivity({ networkOnline: true });
-    checkConnectivityNow();
+    checkConnectivityNow({ force: true });
   });
 
   window.addEventListener('offline', () => {
@@ -160,6 +241,20 @@ if (typeof window !== 'undefined') {
     });
   });
 
+  // Resume check when user returns to tab
+  if (typeof document !== 'undefined') {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        const timeSinceLast = Date.now() - lastCheckTime;
+        if (timeSinceLast > 15000) {
+          checkConnectivityNow();
+        } else {
+          scheduleNextHeartbeat(!globalState.apiReachable);
+        }
+      }
+    });
+  }
+
   // Listen to custom API events from apiFetch
   window.addEventListener('aperio:api:success', () => {
     reportApiSuccess();
@@ -171,12 +266,7 @@ if (typeof window !== 'undefined') {
   });
 
   // Initial heartbeat check
-  checkConnectivityNow();
-
-  // Periodic heartbeat every 15 seconds
-  setInterval(() => {
-    checkConnectivityNow();
-  }, 15000);
+  checkConnectivityNow({ force: true });
 }
 
 /**
@@ -186,7 +276,7 @@ export function useConnectivity() {
   const state = useSyncExternalStore(subscribeConnectivity, getConnectivitySnapshot);
 
   const recheck = useCallback(async () => {
-    return await checkConnectivityNow();
+    return await checkConnectivityNow({ force: true });
   }, []);
 
   return {

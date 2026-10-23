@@ -194,7 +194,39 @@ export function computeAperioIndicesLocally(
   };
 }
 
-export const API_BASE = 'http://localhost:8000/api';
+/**
+ * Resolves the backend server origin based on environment configuration:
+ * 1. Respects VITE_API_URL environment variable if provided.
+ * 2. In browser runtime, if hosted on localhost or 127.0.0.1, uses local FastAPI server (http://localhost:8000).
+ * 3. In Vite development mode, uses local FastAPI server (http://localhost:8000).
+ * 4. In deployed production environments (e.g. Vercel), defaults to working production backend (https://aperio-backend.onrender.com).
+ */
+export function getBackendOrigin(): string {
+  // 1. Explicit VITE_API_URL from environment
+  const envUrl = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+  if (envUrl) {
+    return envUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+  }
+
+  // 2. Runtime browser location detection
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      return 'http://localhost:8000';
+    }
+  }
+
+  // 3. Vite DEV mode
+  if (import.meta.env.DEV) {
+    return 'http://localhost:8000';
+  }
+
+  // 4. Working Production backend deployed on Render
+  return 'https://aperio-backend.onrender.com';
+}
+
+export const BACKEND_URL = getBackendOrigin();
+export const API_BASE = `${BACKEND_URL}/api`;
 
 export async function fetchRiskIndices(scenarioId: string): Promise<RiskIndicesBreakdown> {
   try {

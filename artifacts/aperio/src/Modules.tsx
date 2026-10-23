@@ -28,7 +28,8 @@ import {
   fetchMonitoringState,
   triggerMonitoringCycle,
   submitOperatorReview,
-  RiskIndicesBreakdown
+  RiskIndicesBreakdown,
+  BACKEND_URL
 } from './api';
 
 type Props = { path: string; scenario: Scenario; state: LocalState; setState: (s: LocalState) => void; onToast: (m: string) => void };
@@ -3024,7 +3025,7 @@ function Reports({ scenario, state, setState, onToast }: Props) {
     // Construct full download URL from API_BASE
     const fullUrl = reportResult.download_url.startsWith('http')
       ? reportResult.download_url
-      : `http://localhost:8000${reportResult.download_url}`;
+      : `${BACKEND_URL}${reportResult.download_url}`;
 
     // Trigger direct browser download using anchor element
     const link = document.createElement('a');

@@ -158,7 +158,7 @@ export const OnlineStatusBadge: React.FC<OnlineStatusBadgeProps> = ({
               <span style={{ color: '#94a3b8' }}>FastAPI Backend:</span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: apiReachable ? '#10b981' : '#ef4444' }}>
                 {apiReachable ? <CheckCircle2 size={11} /> : <AlertTriangle size={11} />}
-                {apiReachable ? 'Operational (8000)' : 'Unreachable'}
+                {apiReachable ? 'Operational' : 'Unreachable'}
               </span>
             </div>
 

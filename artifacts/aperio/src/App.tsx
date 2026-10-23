@@ -48,7 +48,7 @@ import {
   stamp
 } from './data';
 import type { LocalState, Scenario } from './data';
-import { askGeoChat, getGeoChatProvider, loginOperator } from './api';
+import { askGeoChat, getGeoChatProvider, loginOperator, BACKEND_URL } from './api';
 import './index.css';
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -756,7 +756,7 @@ function SignInPage({ state, setState }: { state: LocalState; setState: (s: Loca
             REVISIT CYCLE: <span>6-12 DAYS</span>
           </div>
           <div className="cinematic-hud-stat">
-            FASTAPI SYNC: <span>PORT 8000</span>
+            FASTAPI SYNC: <span>{BACKEND_URL.includes("localhost") ? "PORT 8000" : "CLOUD API"}</span>
           </div>
         </div>
       </div>
@@ -1538,7 +1538,7 @@ function CommandShell({
 
         <div className="demo-note">
           <strong><CircleDot size={11} /> OPERATIONAL SYSTEM</strong>
-          Connected to FastAPI Backend on port 8000.
+          {BACKEND_URL.includes("localhost") ? "Connected to local FastAPI on port 8000." : "Connected to Cloud Intelligence Backend."}
         </div>
 
         {/* User Information */}
