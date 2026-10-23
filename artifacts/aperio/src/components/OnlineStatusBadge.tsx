@@ -83,12 +83,21 @@ export const OnlineStatusBadge: React.FC<OnlineStatusBadgeProps> = ({
         )}
 
         {/* Label Text */}
-        <span>
-          {variant === 'minimal'
-            ? (isOnline ? 'ONLINE' : 'OFFLINE')
-            : variant === 'compact'
-            ? (isOnline ? 'ONLINE' : 'OFFLINE MODE')
-            : (isOnline ? 'ONLINE · CLOUD CONNECTED' : 'OFFLINE · LOCAL CACHE')}
+        <span className="online-badge-text">
+          {variant === 'minimal' ? (
+            isOnline ? 'ONLINE' : 'OFFLINE'
+          ) : variant === 'compact' ? (
+            isOnline ? 'ONLINE' : 'OFFLINE MODE'
+          ) : (
+            <>
+              <span className="online-badge-full">
+                {isOnline ? 'ONLINE · CLOUD CONNECTED' : 'OFFLINE · LOCAL CACHE'}
+              </span>
+              <span className="online-badge-compact">
+                {isOnline ? 'ONLINE' : 'OFFLINE'}
+              </span>
+            </>
+          )}
         </span>
 
         {/* Manual Refresh Spinner Button */}
@@ -117,7 +126,8 @@ export const OnlineStatusBadge: React.FC<OnlineStatusBadgeProps> = ({
             top: 'calc(100% + 6px)',
             right: 0,
             zIndex: 9999,
-            width: 280,
+            width: 'min(280px, calc(100vw - 24px))',
+            maxWidth: 'calc(100vw - 24px)',
             padding: '12px 14px',
             background: '#0d1520',
             border: '1px solid rgba(34, 211, 238, 0.25)',

@@ -1293,7 +1293,7 @@ function AskAperioCopilot({
       </button>
 
       {open && (
-        <section className="chat-panel" aria-label="APERIO Grounded Copilot" style={{ width: 400, maxHeight: 540, display: 'flex', flexDirection: 'column' }}>
+        <section className="chat-panel" aria-label="APERIO Grounded Copilot" style={{ width: 'min(380px, calc(100vw - 24px))', maxHeight: 'min(540px, calc(100dvh - 90px))', display: 'flex', flexDirection: 'column' }}>
           <header className="chat-head">
             <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
               <Bot size={15} style={{ color: '#38bdf8' }} />
