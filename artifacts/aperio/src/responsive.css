@@ -251,6 +251,10 @@ img, video, canvas {
   .area-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
+  .pop-breakdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
   .portal-actions {
     grid-template-columns: repeat(2, 1fr) !important;
   }
@@ -423,6 +427,10 @@ img, video, canvas {
   .area-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 16px !important;
+  }
+  .pop-breakdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
   }
 }
 
@@ -856,6 +864,28 @@ img, video, canvas {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 8px !important;
+  }
+
+  .pop-breakdown-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .quick-trail {
+    grid-template-columns: 1fr !important;
+  }
+
+  .terrain-readings-card {
+    position: relative !important;
+    left: auto !important;
+    bottom: auto !important;
+    max-width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  .range-row span {
+    font-size: 11px !important;
+    line-height: 1.25 !important;
   }
 
   .map-hud-controls {

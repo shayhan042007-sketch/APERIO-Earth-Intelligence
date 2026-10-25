@@ -1683,7 +1683,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 24,
+            padding: 'clamp(8px, 2vw, 24px)',
             animation: 'fadeIn 0.15s ease'
           }}
         >
@@ -1769,7 +1769,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 12,
-                minHeight: 460
+                minHeight: 'min(460px, 45vh)'
               }}
             >
               <img
@@ -2756,7 +2756,7 @@ function Resources({ scenario, state, setState, onToast }: Props) {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 14 }}>
+        <div className="pop-breakdown-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 14 }}>
           {/* Metric 1: Total District Census */}
           <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '12px 14px' }}>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: 4 }}>
@@ -3431,7 +3431,7 @@ function Monitoring({ scenario, state, setState, onToast }: Props) {
             </table>
           </div>
 
-          <div style={{ marginTop: 18, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="btn-action-row" style={{ marginTop: 18, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
             <button className="btn" onClick={handleRunCycle} disabled={runningCycle || isSyncing}>
               <RefreshCw size={16} className={runningCycle ? 'animate-spin' : ''} /> {runningCycle ? 'Executing Orchestrator...' : 'Trigger Orchestrator Cycle'}
             </button>
