@@ -32,6 +32,7 @@ import {
   BACKEND_URL
 } from './api';
 import { getFallbackDetectionZones } from './detectionZonesData';
+import { cacheScenarioImagery } from './registerServiceWorker';
 
 type Props = { path: string; scenario: Scenario; state: LocalState; setState: (s: LocalState) => void; onToast: (m: string) => void };
 
@@ -626,6 +627,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
   const [backendMeta, setBackendMeta] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [imgError, setImgError] = useState<{ pre: boolean; post: boolean }>({ pre: false, post: false });
   const [inspectModal, setInspectModal] = useState<{
     open: boolean;
     type: 'before' | 'after';
@@ -640,14 +642,39 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
     let mounted = true;
     setLoading(false);
     setInspectModal(null);
+    setImgError({ pre: false, post: false });
     const initialZones = getFallbackDetectionZones(scenario.id);
     if (initialZones.length > 0) {
       setSelectedZoneId(initialZones[0].id);
     }
+
+    // 1. Proactively instruct Service Worker to cache this scenario's satellite imagery
+    cacheScenarioImagery([scenario.pre_image, scenario.post_image]);
+
+    // 2. Restore cached offline metadata if present
+    try {
+      const cached = localStorage.getItem(`aperio-change-meta-${scenario.id}`);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setBackendMeta(parsed);
+        const availableZones = (parsed.detection_zones && parsed.detection_zones.length > 0)
+          ? parsed.detection_zones
+          : initialZones;
+        if (availableZones.length > 0) {
+          setSelectedZoneId(availableZones[0].id);
+        }
+      }
+    } catch {}
+
+    // 3. Revalidate from live API
     fetchChangeDetection(scenario.id).then(res => {
       if (mounted) {
         if (res) {
           setBackendMeta(res);
+          try {
+            localStorage.setItem(`aperio-change-meta-${scenario.id}`, JSON.stringify(res));
+          } catch {}
+          cacheScenarioImagery([res.pre_image_url, res.post_image_url]);
           const availableZones = (res.detection_zones && res.detection_zones.length > 0)
             ? res.detection_zones
             : initialZones;
@@ -662,7 +689,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
     setZoom(1);
     setPanOffset({ x: 0, y: 0 });
     return () => { mounted = false; };
-  }, [scenario.id]);
+  }, [scenario.id, scenario.pre_image, scenario.post_image]);
 
   const preImg = backendMeta?.pre_image_url || scenario.pre_image;
   const postImg = backendMeta?.post_image_url || scenario.post_image;
@@ -842,11 +869,37 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                 }}
               >
                 {/* Main Post-Event Observed Satellite Scene */}
-                <img
-                  src={postImg}
-                  alt={`Post-event observed satellite scene with detection overlay`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
+                {imgError.post ? (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#091522',
+                      color: '#94a3b8',
+                      padding: 24,
+                      textAlign: 'center'
+                    }}
+                  >
+                    <AlertTriangle size={28} style={{ color: '#f59e0b', marginBottom: 8 }} />
+                    <strong style={{ color: '#f1f5f9', fontSize: 13, marginBottom: 4 }}>
+                      Satellite Scene Not Cached Offline
+                    </strong>
+                    <p style={{ fontSize: 11, maxWidth: 360, margin: 0, lineHeight: 1.5, color: '#94a3b8' }}>
+                      Telemetry imagery for this scenario was not cached prior to entering Offline Mode. Connect to the network to download and cache full-resolution satellite passes.
+                    </p>
+                  </div>
+                ) : (
+                  <img
+                    src={postImg}
+                    alt={`Post-event observed satellite scene with detection overlay`}
+                    onError={() => setImgError(prev => ({ ...prev, post: true }))}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                )}
 
                 {/* SVG Vector Detection Overlays */}
                 {showOverlay && (
@@ -959,25 +1012,6 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                 <div style={{ fontWeight: 600 }}>{postDate}</div>
                 <div style={{ color: '#94a3b8', fontSize: 9 }}>{postSensor}</div>
               </div>
-
-              {/* Bottom Mode Kicker on Canvas */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 10,
-                  right: 10,
-                  background: 'rgba(15, 23, 42, 0.88)',
-                  backdropFilter: 'blur(8px)',
-                  padding: '5px 10px',
-                  borderRadius: 4,
-                  fontSize: 9,
-                  color: '#94a3b8',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  pointerEvents: 'none'
-                }}
-              >
-                Resolution: <b>10m/pixel (Level-2A TCI)</b> · CRS: <b>WGS84 UTM</b>
-              </div>
             </div>
           ) : (
             <div style={{ border: '1px solid #cbd5e1', borderRadius: 6, background: '#f8fafc', padding: 24 }}>
@@ -1053,7 +1087,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                 </h3>
               </div>
               <div style={{ fontSize: 10, color: '#64748b', textAlign: 'right' }}>
-                Natural True-Color Reflectance · 10m Ground Resolution
+                Natural True-Color Reflectance · Bi-Temporal Comparison
               </div>
             </div>
 
@@ -1106,16 +1140,42 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                     }}
                     title="Click to enlarge and inspect Baseline Observation"
                   >
-                    <img
-                      src={preImg}
-                      alt={`Pre-event baseline observation (${preSensor})`}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
-                      }}
-                    />
+                    {imgError.pre ? (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: '#091522',
+                          color: '#94a3b8',
+                          padding: 16,
+                          textAlign: 'center'
+                        }}
+                      >
+                        <AlertTriangle size={22} style={{ color: '#f59e0b', marginBottom: 6 }} />
+                        <strong style={{ fontSize: 11, color: '#f1f5f9', marginBottom: 2 }}>
+                          Baseline Imagery Not Cached
+                        </strong>
+                        <span style={{ fontSize: 9.5, color: '#94a3b8', maxWidth: 220 }}>
+                          Connect online to download baseline observation pass for offline viewing.
+                        </span>
+                      </div>
+                    ) : (
+                      <img
+                        src={preImg}
+                        alt={`Pre-event baseline observation (${preSensor})`}
+                        onError={() => setImgError(prev => ({ ...prev, pre: true }))}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block'
+                        }}
+                      />
+                    )}
 
                     {/* Sensor and Date Overlay Badge */}
                     <div
@@ -1137,7 +1197,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                       }}
                     >
                       <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '65%' }}>
-                        {preSensor}
+                        {preSensor.split('(')[0].trim() || 'Sentinel-2 MSI'}
                       </span>
                       <span style={{ color: '#94a3b8', fontSize: 8.5 }}>
                         Cloud: {backendMeta?.cloud_cover_pre ?? 0.0}%
@@ -1241,16 +1301,42 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                     }}
                     title="Click to enlarge and inspect Latest Observation"
                   >
-                    <img
-                      src={postImg}
-                      alt={`Post-event latest observation (${postSensor})`}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
-                      }}
-                    />
+                    {imgError.post ? (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: '#091522',
+                          color: '#94a3b8',
+                          padding: 16,
+                          textAlign: 'center'
+                        }}
+                      >
+                        <AlertTriangle size={22} style={{ color: '#f59e0b', marginBottom: 6 }} />
+                        <strong style={{ fontSize: 11, color: '#f1f5f9', marginBottom: 2 }}>
+                          Latest Observation Not Cached
+                        </strong>
+                        <span style={{ fontSize: 9.5, color: '#94a3b8', maxWidth: 220 }}>
+                          Connect online to download latest observation pass for offline viewing.
+                        </span>
+                      </div>
+                    ) : (
+                      <img
+                        src={postImg}
+                        alt={`Post-event latest observation (${postSensor})`}
+                        onError={() => setImgError(prev => ({ ...prev, post: true }))}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block'
+                        }}
+                      />
+                    )}
 
                     {/* Sensor and Date Overlay Badge */}
                     <div
@@ -1272,7 +1358,7 @@ function ChangeDetection({ scenario, state, setState, onToast }: Props) {
                       }}
                     >
                       <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '65%' }}>
-                        {postSensor}
+                        {postSensor.split('(')[0].trim() || 'Sentinel-2 MSI'}
                       </span>
                       <span style={{ color: '#94a3b8', fontSize: 8.5 }}>
                         Cloud: {backendMeta?.cloud_cover_post ?? 0.0}%

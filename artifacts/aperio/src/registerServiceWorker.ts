@@ -35,3 +35,20 @@ export function registerServiceWorker() {
     });
   }
 }
+
+/**
+ * Proactively instructs the active Service Worker to cache satellite imagery URLs
+ * for offline availability when a scenario is selected or loaded.
+ */
+export function cacheScenarioImagery(urls: (string | undefined)[]) {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+  const validUrls = urls.filter((u): u is string => Boolean(u && typeof u === 'string'));
+  if (validUrls.length === 0) return;
+
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
+      type: 'CACHE_SCENARIO_IMAGERY',
+      urls: validUrls
+    });
+  }
+}

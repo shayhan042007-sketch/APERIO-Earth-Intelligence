@@ -1098,10 +1098,6 @@ function SelectArea({
                 <div className="cinematic-card-bottom">
                   <p className="cinematic-card-desc-text">{s.description}</p>
 
-                  <div className="cinematic-card-data-provenance">
-                    <span>Data source:</span>
-                    <strong>{getDatasetProvenance(s.hazard)}</strong>
-                  </div>
 
                   <div className="cinematic-card-stats-row">
                     <div className="cinematic-card-stat-box">
@@ -1547,7 +1543,69 @@ function CommandShell({
           <span>Switch Scenario</span>
         </button>
 
-        <div className="sidebar-spacer" />
+        {/* Hydrographic Flow Water Treatment for Sidebar Vertical Depth */}
+        <div className="sidebar-spacer sidebar-water-zone">
+          <div className="sidebar-water-canvas" aria-hidden="true">
+            <svg
+              className="sidebar-water-svg"
+              viewBox="0 0 220 180"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="aperioWaterGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#14738d" stopOpacity="0.16" />
+                  <stop offset="50%" stopColor="#0284c7" stopOpacity="0.09" />
+                  <stop offset="100%" stopColor="#082f49" stopOpacity="0.0" />
+                </linearGradient>
+                <linearGradient id="aperioWaterGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.14" />
+                  <stop offset="60%" stopColor="#0369a1" stopOpacity="0.06" />
+                  <stop offset="100%" stopColor="#0f172a" stopOpacity="0.0" />
+                </linearGradient>
+                <linearGradient id="streamLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.0" />
+                  <stop offset="30%" stopColor="#38bdf8" stopOpacity="0.35" />
+                  <stop offset="70%" stopColor="#0284c7" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#0284c7" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+              <path
+                className="water-wave wave-1"
+                d="M -20,30 Q 50,75 110,40 T 240,65 L 240,180 L -20,180 Z"
+                fill="url(#aperioWaterGrad1)"
+              />
+              <path
+                className="water-wave wave-2"
+                d="M -20,60 Q 60,20 125,55 T 240,40 L 240,180 L -20,180 Z"
+                fill="url(#aperioWaterGrad2)"
+              />
+              <path
+                className="water-stream stream-1"
+                d="M 15,-10 C 35,45 25,85 55,130 S 90,175 105,210"
+                stroke="url(#streamLineGrad)"
+                strokeWidth="1.2"
+                strokeDasharray="4 6"
+              />
+              <path
+                className="water-stream stream-2"
+                d="M 85,-10 C 115,50 95,95 135,140 S 175,185 190,220"
+                stroke="url(#streamLineGrad)"
+                strokeWidth="1"
+                strokeDasharray="3 5"
+              />
+            </svg>
+
+            <div className="sidebar-water-badge">
+              <span className="water-pulse-dot" />
+              <div className="water-badge-text">
+                <span className="water-badge-title">HYDROLOGIC FLOW SWEEP</span>
+                <span className="water-badge-sub">Surface Runoff &amp; Basin Telemetry</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="demo-note">
           <strong><CircleDot size={11} /> OPERATIONAL SYSTEM</strong>

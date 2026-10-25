@@ -191,6 +191,10 @@ img, video, canvas {
     flex: 0 0 216px !important;
     padding: 16px 10px 14px !important;
   }
+  .main-area {
+    margin-left: 216px !important;
+    width: calc(100% - 216px) !important;
+  }
   .topbar {
     padding: 0 16px !important;
     height: 54px !important;
@@ -287,6 +291,10 @@ img, video, canvas {
     border-color: #38bdf8;
   }
 
+  .app-shell::before {
+    display: none !important;
+  }
+
   /* Off-Canvas Sidebar Touch Drawer */
   .sidebar {
     position: fixed !important;
@@ -336,6 +344,10 @@ img, video, canvas {
   .sidebar .user-row {
     justify-content: flex-start !important;
     padding: 14px 6px !important;
+  }
+  .sidebar-water-zone {
+    min-height: 80px !important;
+    margin: 8px 0 !important;
   }
 
   /* Mobile Backdrop */

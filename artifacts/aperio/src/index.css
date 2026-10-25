@@ -595,3 +595,193 @@
   font-weight: 600;
   color: #0f172a;
 }
+
+/* ==========================================================================
+   APERIO 2.0 — SIDEBAR SCROLL CONTINUITY & HYDROGRAPHIC WATER FLOW (FIX 3)
+   ========================================================================== */
+@media (min-width: 821px) {
+  .app-shell {
+    position: relative;
+    background: #f7f9fb;
+    display: flex;
+    min-height: 100dvh;
+  }
+
+  /* Fixed sidebar permanently stays full-height on the left without any gaps */
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 246px !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    z-index: 50 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    background: #142b43 !important;
+    border-right: 1px solid #29425b !important;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Main content area offsets cleanly to the right of the fixed sidebar */
+  .main-area {
+    margin-left: 246px !important;
+    width: calc(100% - 246px) !important;
+    min-width: 0 !important;
+  }
+}
+
+.sidebar {
+  overflow-x: hidden;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse 200px 280px at 10% 80%, rgba(20, 115, 141, 0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 220px at 90% 40%, rgba(2, 132, 199, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sidebar > * {
+  position: relative;
+  z-index: 2;
+}
+
+.sidebar-water-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+  margin: 10px 0;
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(15, 33, 53, 0.45) 0%, rgba(13, 39, 63, 0.8) 100%);
+  border: 1px solid rgba(72, 169, 193, 0.18);
+  box-shadow: inset 0 2px 8px rgba(10, 25, 41, 0.45);
+}
+
+.sidebar-water-canvas {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sidebar-water-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 125px;
+  opacity: 0.9;
+}
+
+.water-wave {
+  transform-origin: center bottom;
+}
+
+.water-wave.wave-1 {
+  animation: waterDrift1 14s ease-in-out infinite alternate;
+}
+
+.water-wave.wave-2 {
+  animation: waterDrift2 18s ease-in-out infinite alternate;
+}
+
+.water-stream {
+  animation: streamPulse 8s linear infinite;
+}
+
+.water-stream.stream-2 {
+  animation-delay: -2.5s;
+}
+
+@keyframes waterDrift1 {
+  0% { transform: translateY(0px) scaleY(1); }
+  50% { transform: translateY(-4px) scaleY(1.05); }
+  100% { transform: translateY(-2px) scaleY(0.98); }
+}
+
+@keyframes waterDrift2 {
+  0% { transform: translateY(-2px) scaleY(0.95); }
+  50% { transform: translateY(2px) scaleY(1.04); }
+  100% { transform: translateY(0px) scaleY(1); }
+}
+
+@keyframes streamPulse {
+  0% { stroke-dashoffset: 0; opacity: 0.35; }
+  50% { opacity: 0.8; }
+  100% { stroke-dashoffset: -32; opacity: 0.35; }
+}
+
+.sidebar-water-badge {
+  position: relative;
+  z-index: 3;
+  margin: auto 8px 8px 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(14, 34, 54, 0.75);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(72, 169, 193, 0.22);
+  border-radius: 4px;
+  padding: 5px 8px;
+}
+
+.water-pulse-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
+  animation: waterPulse 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes waterPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 8px #38bdf8; }
+}
+
+.water-badge-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.water-badge-title {
+  font-family: var(--app-font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7dd3fc;
+}
+
+.water-badge-sub {
+  font-size: 7.5px;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .water-wave, .water-stream, .water-pulse-dot {
+    animation: none !important;
+  }
+}
+
