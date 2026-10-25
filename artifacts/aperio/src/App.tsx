@@ -1515,6 +1515,7 @@ function CommandShell({
                 href={path}
                 title={label}
                 className={`nav-item ${activePath === path ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon size={14} />
                 <span>{label}</span>
@@ -1524,12 +1525,24 @@ function CommandShell({
         </nav>
 
         <div className="nav-label">Session Controls</div>
-        <button className="nav-item" onClick={() => setTrailShown(!trailShown)}>
+        <button
+          className="nav-item"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            setTrailShown(!trailShown);
+          }}
+        >
           <Activity size={14} />
           <span>{trailShown ? 'Hide Activity Trail' : 'Activity Audit Trail'}</span>
         </button>
 
-        <button className="nav-item" onClick={() => setLocation('/select-area')}>
+        <button
+          className="nav-item"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            setLocation('/select-area');
+          }}
+        >
           <Layers3 size={14} />
           <span>Switch Scenario</span>
         </button>

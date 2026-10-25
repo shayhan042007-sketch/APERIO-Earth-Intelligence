@@ -360,7 +360,7 @@ img, video, canvas {
   }
 
   .content {
-    padding: 16px 14px 34px !important;
+    padding: 16px 14px 70px !important;
   }
 
   .portal-actions {
@@ -418,6 +418,11 @@ img, video, canvas {
   .operating-loop-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
+  }
+
+  .area-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
   }
 }
 
@@ -556,14 +561,119 @@ img, video, canvas {
 
   /* Public landing header */
   .public-header {
-    height: auto !important;
-    padding: 12px 14px !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
+    height: 58px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    background: #ffffff !important;
+  }
+  .public-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    text-decoration: none !important;
+  }
+  .public-logo img {
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0 !important;
+  }
+  .public-logo strong {
+    font-size: 16px !important;
+    letter-spacing: 0.1em !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+  .public-logo .brand-sub {
+    display: none !important;
   }
   .public-header .control-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .public-header .control-row .btn {
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    min-height: 40px !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Public Section Sizing on Mobile */
+  .public-section {
+    padding: 36px 14px !important;
+  }
+  .public-section .section-heading {
+    font-size: clamp(22px, 5.5vw, 28px) !important;
+    margin: 8px 0 20px !important;
+  }
+
+  /* Active Scenarios Cards: Full-width responsive cards on mobile */
+  .area-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
     width: 100% !important;
-    justify-content: space-between !important;
+  }
+  .area-card {
+    width: 100% !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .area-card img {
+    height: 180px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+  .area-card .area-content {
+    padding: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .area-card .badge {
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    width: fit-content !important;
+    display: inline-block !important;
+  }
+  .area-card h3 {
+    font-size: 17px !important;
+    line-height: 1.35 !important;
+    margin: 4px 0 !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    word-break: break-word !important;
+  }
+  .area-card p {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+    color: #475569 !important;
+    margin: 0 !important;
+  }
+  .area-card .card-cta {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #0284c7 !important;
+    margin-top: 10px !important;
+    padding: 8px 0 !important;
+    min-height: 44px !important;
   }
 
   /* Hero section adjustments */
@@ -668,7 +778,7 @@ img, video, canvas {
   }
 
   .content {
-    padding: 10px 8px 24px !important;
+    padding: 10px 8px 84px !important;
   }
 
   .module-panel, .panel, .decision-card, .verify-card {
@@ -793,7 +903,7 @@ img, video, canvas {
     padding: 8px 6px !important;
   }
   .content {
-    padding: 8px 5px 20px !important;
+    padding: 8px 5px 84px !important;
   }
   .heading h1 {
     font-size: 22px !important;

@@ -1146,16 +1146,155 @@
 }
 
 @media (max-width: 768px) {
-  .cinematic-carousel-card {
-    width: 86vw;
-    height: 58vh;
+  .cinematic-select-topbar {
+    padding: 10px 14px !important;
+    gap: 8px !important;
   }
-  .cinematic-carousel-nav-btn {
-    width: 40px;
-    height: 40px;
+  .cinematic-select-brand {
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+  .cinematic-select-brand img {
+    width: 26px !important;
+    height: 26px !important;
+    flex-shrink: 0 !important;
+  }
+  .cinematic-select-brand strong {
+    font-size: 13px !important;
+    letter-spacing: 0.05em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 170px !important;
+  }
+  .cinematic-select-brand span {
+    display: none !important;
+  }
+  .cinematic-select-status {
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+  .cinematic-hud-pill {
+    display: none !important;
+  }
+  .cinematic-stage-header {
+    top: 8px !important;
+    padding: 0 10px !important;
+  }
+  .cinematic-stage-kicker {
+    font-size: 10px !important;
+    margin-bottom: 2px !important;
+  }
+  .cinematic-stage-title {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+  }
+  .cinematic-carousel-track {
+    height: calc(100dvh - 150px) !important;
+    min-height: 480px !important;
+  }
+  .cinematic-carousel-card {
+    width: min(92vw, 420px) !important;
+    max-width: 92vw !important;
+    height: auto !important;
+    max-height: calc(100dvh - 170px) !important;
+    min-height: 410px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .cinematic-card-header {
+    padding: 14px 16px 6px !important;
+  }
+  .cinematic-card-target-kicker {
+    font-size: 10px !important;
+    margin-bottom: 2px !important;
+  }
+  .cinematic-card-title-massive {
+    font-size: 22px !important;
+    line-height: 1.2 !important;
+  }
+  .cinematic-card-loc-sub {
+    font-size: 12px !important;
+    margin-top: 2px !important;
+  }
+  .cinematic-card-status-badge {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+  }
+  .cinematic-card-bottom {
+    padding: 8px 16px 14px !important;
+    gap: 8px !important;
+  }
+  .cinematic-card-desc-text {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+  .cinematic-card-data-provenance {
+    font-size: 11px !important;
   }
   .cinematic-card-stats-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr) !important;
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+  .cinematic-card-stat-box span {
+    font-size: 9px !important;
+  }
+  .cinematic-card-stat-box strong {
+    font-size: 16px !important;
+  }
+  .cinematic-card-stat-box small {
+    font-size: 9px !important;
+  }
+  .cinematic-btn-launch-mission {
+    padding: 12px 18px !important;
+    font-size: 14px !important;
+    min-height: 44px !important;
+    margin-top: 4px !important;
+  }
+  .cinematic-carousel-nav-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .cinematic-carousel-nav-btn.prev {
+    left: 4px !important;
+  }
+  .cinematic-carousel-nav-btn.next {
+    right: 4px !important;
+  }
+  .cinematic-carousel-bottom-bar {
+    bottom: 8px !important;
+    padding: 0 8px !important;
+  }
+  .cinematic-carousel-indicators {
+    gap: 6px !important;
+  }
+  .cinematic-indicator-chip {
+    padding: 4px 10px !important;
+    font-size: 10px !important;
+  }
+  .cinematic-keyboard-hint {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cinematic-carousel-card {
+    width: 94vw !important;
+    max-width: 94vw !important;
+  }
+  .cinematic-card-header {
+    padding: 10px 12px 4px !important;
+  }
+  .cinematic-card-bottom {
+    padding: 6px 12px 12px !important;
+  }
+  .cinematic-card-stats-row {
+    padding: 6px 6px !important;
+    gap: 4px !important;
+  }
+  .cinematic-card-stat-box strong {
+    font-size: 14px !important;
   }
 }
 
