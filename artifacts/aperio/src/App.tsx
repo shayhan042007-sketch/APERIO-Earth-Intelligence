@@ -1050,22 +1050,20 @@ function SelectArea({
             const isActive = diff === 0;
             const isNeighbor = Math.abs(diff) === 1;
 
-            let transformStyle = '';
-            if (isActive) {
-              transformStyle = 'translate(-50%, -50%) scale(1) translateX(0%) translateZ(0px)';
-            } else if (diff === -1) {
-              transformStyle = 'translate(-50%, -50%) scale(0.72) translateX(-118%) translateZ(-90px)';
-            } else if (diff === 1) {
-              transformStyle = 'translate(-50%, -50%) scale(0.72) translateX(118%) translateZ(-90px)';
-            } else {
-              transformStyle = `translate(-50%, -50%) scale(0.5) translateX(${diff > 0 ? '220%' : '-220%'}) translateZ(-160px)`;
-            }
+            const roleClass = isActive
+              ? 'is-active'
+              : diff === -1
+              ? 'is-neighbor is-prev'
+              : diff === 1
+              ? 'is-neighbor is-next'
+              : diff < -1
+              ? 'is-hidden is-hidden-left'
+              : 'is-hidden is-hidden-right';
 
             return (
               <article
                 key={s.id}
-                className={`cinematic-carousel-card ${isActive ? 'is-active' : isNeighbor ? 'is-neighbor' : 'is-hidden'} ${s.hazard.toUpperCase()}`}
-                style={{ transform: transformStyle }}
+                className={`cinematic-carousel-card ${roleClass} ${s.hazard.toUpperCase()}`}
                 onClick={() => {
                   if (!isActive && !isTransitioning) {
                     setActiveIndex(idx);
@@ -1802,6 +1800,10 @@ function App() {
           <Protected state={state}>
             <SelectArea state={state} setState={setState} onToast={setToast} />
           </Protected>
+        </Route>
+
+        <Route path="/select-mission">
+          <Redirect to="/select-area" />
         </Route>
 
         {/* Redirect aliases for DEM and Relocation to Overview */}
